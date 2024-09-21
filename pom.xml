@@ -7,7 +7,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.3.2</version>
+		<version>3.3.3</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 
@@ -20,6 +20,7 @@
 	<packaging>pom</packaging>
 	<modules>
 		<module>msvc-usuarios</module>
+		<module>msvc-cursos</module>
 	</modules>
 	<url/>
 
@@ -66,6 +67,9 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+        	<skip>true</skip>
+    		</configuration>
 			</plugin>
 		</plugins>
 	</build>
