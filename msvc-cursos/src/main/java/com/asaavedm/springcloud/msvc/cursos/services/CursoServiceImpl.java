@@ -9,8 +9,8 @@ import org.springframework.transaction.annotation.Transactional;
 import com.asaavedm.springcloud.msvc.cursos.clients.UsuarioClientRest;
 import com.asaavedm.springcloud.msvc.cursos.models.Usuario;
 import com.asaavedm.springcloud.msvc.cursos.models.entity.Curso;
+import com.asaavedm.springcloud.msvc.cursos.models.entity.CursoUsuario;
 import com.asaavedm.springcloud.msvc.cursos.repositories.CursoRepository;
-
 
 @Service
 public class CursoServiceImpl implements CursoService {
@@ -20,8 +20,8 @@ public class CursoServiceImpl implements CursoService {
   private final UsuarioClientRest client;
 
   public CursoServiceImpl(CursoRepository repository, UsuarioClientRest client) {
-      this.repository = repository;
-      this.client = client;
+    this.repository = repository;
+    this.client = client;
   }
 
   @Override
@@ -49,18 +49,80 @@ public class CursoServiceImpl implements CursoService {
   }
 
   @Override
+  @Transactional
   public Optional<Usuario> asignarUsuario(Usuario usuario, Long cursoId) {
-    throw new UnsupportedOperationException("Unimplemented method 'asignarUsuario'");
+    Optional<Curso> o = repository.findById(cursoId);
+    if (o.isPresent()) {
+      Usuario usuarioMsvc = client.detalle(usuario.getId());
+
+      Curso curso = o.get();
+      CursoUsuario cursoUsuario = new CursoUsuario();
+      cursoUsuario.setUsuarioId(usuarioMsvc.getId());
+
+      curso.addCursoUsuario(cursoUsuario);
+      repository.save(curso);
+      return Optional.of(usuarioMsvc);
+    }
+    return Optional.empty();
   }
 
   @Override
+  @Transactional
   public Optional<Usuario> crearUsuario(Usuario usuario, Long cursoId) {
-    throw new UnsupportedOperationException("Unimplemented method 'crearUsuario'");
+    Optional<Curso> o = repository.findById(cursoId);
+    if (o.isPresent()) {
+      Usuario usuarioNuevoMsvc = client.crear(usuario);
+
+      Curso curso = o.get();
+      CursoUsuario cursoUsuario = new CursoUsuario();
+      cursoUsuario.setUsuarioId(usuarioNuevoMsvc.getId());
+
+      curso.addCursoUsuario(cursoUsuario);
+      repository.save(curso);
+      return Optional.of(usuarioNuevoMsvc);
+    }
+    return Optional.empty();
   }
 
   @Override
+  @Transactional
   public Optional<Usuario> eliminarUsuario(Usuario usuario, Long cursoId) {
-    throw new UnsupportedOperationException("Unimplemented method 'eliminarUsuario'");
+    Optional<Curso> o = repository.findById(cursoId);
+    if (o.isPresent()) {
+      Usuario usuarioMsvc = client.detalle(usuario.getId());
+
+      Curso curso = o.get();
+      CursoUsuario cursoUsuario = new CursoUsuario();
+      cursoUsuario.setUsuarioId(usuarioMsvc.getId());
+
+      curso.removeCursoUsuario(cursoUsuario);
+      repository.save(curso);
+      return Optional.of(usuarioMsvc);
+    }
+    return Optional.empty();
   }
-  
+
+  @Override
+  @Transactional(readOnly = true)
+  public Optional<Curso> porIdConUsuarios(Long id) {
+    Optional<Curso> o = repository.findById(id);
+    if (o.isPresent()) {
+      Curso curso = o.get();
+      if (!curso.getCursoUsuarios().isEmpty()) {
+        List<Long> ids = curso.getCursoUsuarios().stream().map(CursoUsuario::getUsuarioId).toList();
+
+        List<Usuario> usuarios = client.obtenerAlumnosPorCurso(ids);
+        curso.setUsuarios(usuarios);
+      }
+      return Optional.of(curso);
+    }
+    return Optional.empty();
+  }
+
+  @Override
+  @Transactional()
+  public void eliminarCursoUsuarioPorId(Long id) {
+    repository.eliminarCursoUsuarioPorId(id);
+  }
+
 }

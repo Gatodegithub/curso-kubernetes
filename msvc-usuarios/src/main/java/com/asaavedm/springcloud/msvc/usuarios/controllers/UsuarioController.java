@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -16,6 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.asaavedm.springcloud.msvc.usuarios.models.entity.Usuario;
@@ -26,8 +26,11 @@ import jakarta.validation.Valid;
 @RestController
 public class UsuarioController {
 
-  @Autowired
   private UsuarioService service;
+
+  public UsuarioController(UsuarioService service) {
+    this.service = service;
+  }
 
   @GetMapping
   public List<Usuario> listar() {
@@ -86,6 +89,11 @@ public class UsuarioController {
       return ResponseEntity.noContent().build();
     }
     return ResponseEntity.notFound().build();
+  }
+
+  @GetMapping("/usuarios-por-curso")
+  public ResponseEntity<?> obtenerAlumnosPorCurso(@RequestParam List<Long> ids) {
+    return ResponseEntity.ok(service.listarPorIds(ids));
   }
 
   private ResponseEntity<?> validar(BindingResult result) {
