@@ -7,11 +7,13 @@
 		<artifactId>curso-kubernetes</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
+
 	<groupId>com.asaavedm.springcloud.msvc.cursos</groupId>
 	<artifactId>msvc-cursos</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>msvc-cursos</name>
 	<description>Demo project for Spring Boot</description>
+
 	<url/>
 	<licenses>
 		<license/>
@@ -75,14 +77,5 @@
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
-
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-			</plugin>
-		</plugins>
-	</build>
 
 </project>
