@@ -1,4 +1,4 @@
-FROM openjdk:17-alpine AS builder
+FROM eclipse-temurin:17.0.15_6-jdk AS builder
 
 WORKDIR /app/msvc-cursos
 # Posicionado desde curso-kubernetes copio el pom.xml a /app
@@ -14,7 +14,7 @@ COPY ./msvc-cursos/src ./src
 # Posicionado en /app/msvc-cursos
 RUN ./mvnw clean package -DskipTests
 
-FROM openjdk:17-alpine
+FROM eclipse-temurin:17.0.15_6-jdk
 
 WORKDIR /app
 

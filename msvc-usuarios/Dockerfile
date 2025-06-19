@@ -1,6 +1,6 @@
 ARG MSVC_NAME=msvc-usuarios
 
-FROM openjdk:17-alpine AS builder
+FROM eclipse-temurin:17.0.15_6-jdk AS builder
 
 ARG MSVC_NAME
 
@@ -18,7 +18,7 @@ COPY ./$MSVC_NAME/src ./src
 # Posicionado en /app/msvc-usuarios
 RUN ./mvnw clean package -DskipTests
 
-FROM openjdk:17-alpine
+FROM eclipse-temurin:17.0.15_6-jdk
 
 ARG MSVC_NAME
 

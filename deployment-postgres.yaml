@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres16
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      role: postgres
+  template:
+    metadata:
+      labels:
+        role: postgres
+    spec:
+      containers:
+      - image: postgres:16-alpine
+        name: postgres16
+        ports:
+        - containerPort: 5432
+        env:
+        - name: POSTGRES_PASSWORD
+          value: asaavedm
+        - name: POSTGRES_DB
+          value: msvc_cursos
+        volumeMounts:
+          - name: data-postgres
+            mountPath: /var/lib/postgresql/data
+      volumes:
+      - name: data-postgres
+        persistentVolumeClaim:
+          claimName: postgres-pvc

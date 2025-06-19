@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -28,8 +30,16 @@ public class UsuarioController {
 
   private UsuarioService service;
 
-  public UsuarioController(UsuarioService service) {
+  private ApplicationContext applicationContext;
+
+  public UsuarioController(UsuarioService service, ApplicationContext applicationContext) {
     this.service = service;
+    this.applicationContext = applicationContext;
+  }
+
+  @GetMapping("/crash")
+  public void crash() {
+    ((ConfigurableApplicationContext) applicationContext).close();
   }
 
   @GetMapping
