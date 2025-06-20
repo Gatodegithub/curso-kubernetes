@@ -17,3 +17,34 @@ spec:
         name: usuariosarm64
         ports:
         - containerPort: 8001
+        env:
+          - name: PORT
+            valueFrom:
+              configMapKeyRef:
+                name: msvc-usuarios-config
+                key: port
+          - name: DB_HOST
+            valueFrom:
+              configMapKeyRef:
+                name: msvc-usuarios-config
+                key: db_host
+          - name: DB_DATABASE
+            valueFrom:
+              configMapKeyRef:
+                name: msvc-usuarios-config
+                key: database
+          - name: DB_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: msvc-usuarios-secret
+                key: username
+          - name: DB_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: msvc-usuarios-secret
+                key: password
+          - name: CURSOS_URL
+            valueFrom:
+              configMapKeyRef:
+                name: msvc-usuarios-config
+                key: curso_url

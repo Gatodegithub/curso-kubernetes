@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: msvc-usuarios-config
+data:
+  port: "8001"
+  db_host: "mysql:3306"
+  database: "msvc_usuarios"
+  #username: "root"
+  #password: "asaavedm"
+  curso_url: "msvc-cursos:8002"
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: msvc-cursos-config
+data:
+  port: "8002"
+  db_host: "postgres16:5432"
+  database: "msvc_cursos"
+  #username: "postgres"
+  #password: "asaavedm"
+  usuario_url: "msvc-usuarios:8001"

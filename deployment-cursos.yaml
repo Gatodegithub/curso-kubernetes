@@ -19,14 +19,32 @@ spec:
           - containerPort: 8002
         env:
           - name: PORT
-            value: "8002"
+            valueFrom:
+              configMapKeyRef:
+                name: msvc-cursos-config
+                key: port
           - name: DB_HOST
-            value: "postgres16:5432"
+            valueFrom:
+              configMapKeyRef:
+                name: msvc-cursos-config
+                key: db_host
           - name: DB_DATABASE
-            value: "msvc_cursos"
+            valueFrom:
+              configMapKeyRef:
+                name: msvc-cursos-config
+                key: database
           - name: DB_USERNAME
-            value: "postgres"
+            valueFrom:
+              secretKeyRef:
+                name: msvc-cursos-secret
+                key: username
           - name: DB_PASSWORD
-            value: "asaavedm"
+            valueFrom:
+              secretKeyRef:
+                name: msvc-cursos-secret
+                key: password
           - name: USUARIOS_URL
-            value: "msvc-usuarios:8001"
+            valueFrom:
+              configMapKeyRef:
+                name: msvc-cursos-config
+                key: usuario_url
